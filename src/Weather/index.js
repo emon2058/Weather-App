@@ -1,24 +1,40 @@
 import React,{useState,useEffect} from 'react';
 import './Weather.css'
 function Weather(){
+  //initially cityName is empty
   const [cityName,setCityName]=useState('');
+  //initially search is Dhaka that is seen in search box
   const [search,setSearch]=useState('Dhaka');
-
+  //change the text in search bar
   const Searching=(event)=>{
      setSearch(event.target.value);
   }
+  //end of search bar
+
+  //real time search and get data from api
   useEffect(()=>{
     const getApi=async ()=>{
+      //fetch data and sotre in url
       const url =`http://api.openweathermap.org/data/2.5/weather?q=${search}&units=metric&appid=6e7281902b194650f81042fe428c9dd0`;
+      //wait untill the data fetch and sotre in response
       const response = await fetch(url);
-      console.log(response);
+      //see response in console
+      console.log('fetch url',response);
+      //arrange response in json format
       const responseJson= await response.json();
-      console.log('dfdf'+ responseJson.main);
+      //see responseJson in console
+      console.log('responseJson',responseJson);
+      //see responseJson.main in console
+      console.log('responseJson.main', responseJson.main);
+      //set city responseJson
       setCityName(responseJson);
-      console.log('qq'+responseJson.weather)
+      //see responseJson.weather in console
+      console.log('responseJson.weather',responseJson.weather)
     }
+    //call getApi
     getApi();
-  },[search])
+  },[search])//when searching this will render
+//end of useEffect
   return(
     <div className="Weather">
       <div className={`Container ${(typeof cityName.main!="undefined")?((cityName.weather[0].main=='Clear')?'Clear' :
